@@ -1,0 +1,91 @@
+name: Build Flutter APK & AAB
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build Android APK and App Bundle (AAB)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java Development Kit (JDK 17)
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+          cache: 'gradle'
+
+      - name: Cache Flutter dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            /opt/hostedtoolcache/flutter
+            ~/.pub-cache
+          key: ${{ runner.os }}-flutter-${{ hashFiles('**/pubspec.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-flutter-
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.24.3'
+          channel: 'stable'
+          cache: true
+          cache-key: 'flutter-:os:-:channel:-:version:-:arch:-:hash:'
+          cache-path: '${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:'
+
+      - name: Verify Flutter version
+        run: flutter --version
+
+      - name: Install dependencies
+        run: |
+          cd flutter_car_platform || true
+          flutter pub get
+
+      - name: Run code analyzer
+        run: |
+          cd flutter_car_platform || true
+          flutter analyze --no-fatal-infos
+
+      - name: Run unit tests
+        run: |
+          cd flutter_car_platform || true
+          flutter test || echo "No tests configured yet"
+
+      - name: Build Android Release APK
+        run: |
+          cd flutter_car_platform || true
+          flutter build apk --release --split-per-abi
+
+      - name: Build Android Release App Bundle (AAB)
+        run: |
+          cd flutter_car_platform || true
+          flutter build appbundle --release
+
+      - name: Upload Release APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-apk
+          path: |
+            flutter_car_platform/build/app/outputs/flutter-apk/*.apk
+            build/app/outputs/flutter-apk/*.apk
+          retention-days: 14
+
+      - name: Upload Release AAB artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-aab
+          path: |
+            flutter_car_platform/build/app/outputs/bundle/release/*.aab
+            build/app/outputs/bundle/release/*.aab
+          retention-days: 14

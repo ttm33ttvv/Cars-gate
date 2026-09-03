@@ -1,0 +1,6 @@
+{
+  "name": "Cars Gate",
+  "description": "منصة Cars Gate لمعارض وسوق السيارات في اليمن (صنعاء، عدن، حضرموت، تعز) مبنية بـ Flutter و GetX و Supabase مع دعم Realtime والتنبيهات الفورية والمصادقة.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
