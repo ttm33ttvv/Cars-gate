@@ -9,6 +9,40 @@ export const INITIAL_SHOWROOMS: Showroom[] = [
     location: 'صنعاء - شارع الستين الجنوبي',
     phone: '+967771234567',
     userId: '22222222-2222-2222-2222-222222222222',
+    averageRating: 4.8,
+    ratingsCount: 24,
+    ratings: [
+      {
+        id: 'r1',
+        showroomId: 'a1111111-0000-0000-0000-000000000001',
+        userId: 'u101',
+        userName: 'عادل الأنسي',
+        userAvatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100',
+        rating: 5,
+        comment: 'من أفضل المعارض في صنعاء، تعامل راقي ومصداقية تامة في الفحص والسيارات نظيفة جداً كرت ومجمركة.',
+        createdAt: 'قبل يومين'
+      },
+      {
+        id: 'r2',
+        showroomId: 'a1111111-0000-0000-0000-000000000001',
+        userId: 'u102',
+        userName: 'د. نبيل الشرجبي',
+        userAvatar: 'https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=100',
+        rating: 5,
+        comment: 'اشتريت مرسيدس S500 وكانت الإجراءات الجمركية ونقل الملكية سريعة ومنظمة في نفس اليوم. أنصح بالتعامل معهم.',
+        createdAt: 'قبل 5 أيام'
+      },
+      {
+        id: 'r3',
+        showroomId: 'a1111111-0000-0000-0000-000000000001',
+        userId: 'u103',
+        userName: 'م. كمال الذبحاني',
+        userAvatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100',
+        rating: 4,
+        comment: 'معرض ممتاز والسيارات مختارة بعناية، الأسعار بالدولار منطقية مقارنة بنظافة المركبات.',
+        createdAt: 'قبل أسبوعين'
+      }
+    ],
     cars: [
       {
         id: 'c1111111-0000-0000-0000-000000000001',
@@ -56,6 +90,30 @@ export const INITIAL_SHOWROOMS: Showroom[] = [
     location: 'عدن - المنصورة، خط التسعين',
     phone: '+967733987654',
     userId: '22222222-2222-2222-2222-222222222222',
+    averageRating: 4.9,
+    ratingsCount: 31,
+    ratings: [
+      {
+        id: 'r21',
+        showroomId: 'a1111111-0000-0000-0000-000000000002',
+        userId: 'u201',
+        userName: 'وسام اليافعي',
+        userAvatar: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=100',
+        rating: 5,
+        comment: 'خدمة فوق الممتازة في فرع المنصورة بعدن، شريت لاند كروزر VXR مفحوص وجاهز بضمان.',
+        createdAt: 'قبل 3 أيام'
+      },
+      {
+        id: 'r22',
+        showroomId: 'a1111111-0000-0000-0000-000000000002',
+        userId: 'u202',
+        userName: 'هشام العدني',
+        userAvatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100',
+        rating: 5,
+        comment: 'وفروا لي فحص كمبيوتر دقيق وتسهيل إنهاء الجمارك والأرقام. قمة في الأمانة والاحترام.',
+        createdAt: 'قبل أسبوع'
+      }
+    ],
     cars: [
       {
         id: 'c1111111-0000-0000-0000-000000000003',
@@ -85,6 +143,30 @@ export const INITIAL_SHOWROOMS: Showroom[] = [
     location: 'المكلا - حي فوه، الشارع العام',
     phone: '+967712345678',
     userId: '22222222-2222-2222-2222-222222222222',
+    averageRating: 4.7,
+    ratingsCount: 19,
+    ratings: [
+      {
+        id: 'r31',
+        showroomId: 'a1111111-0000-0000-0000-000000000003',
+        userId: 'u301',
+        userName: 'سالم باعباد',
+        userAvatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100',
+        rating: 5,
+        comment: 'معرض متميز في المكلا - حي فوه، تعامل صادق وأمانة عالية في فحص البودي والمحركات.',
+        createdAt: 'قبل 4 أيام'
+      },
+      {
+        id: 'r32',
+        showroomId: 'a1111111-0000-0000-0000-000000000003',
+        userId: 'u302',
+        userName: 'أحمد بن محفوظ',
+        userAvatar: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=100',
+        rating: 4,
+        comment: 'خيارات واسعة من سيارات الدفع الرباعي النظيفة بأسعار مناسبة ومعاملة راقية.',
+        createdAt: 'قبل 10 أيام'
+      }
+    ],
     cars: [
       {
         id: 'c1111111-0000-0000-0000-000000000004',

@@ -17,6 +17,17 @@ export interface Car {
   createdAt: string;
 }
 
+export interface ShowroomRating {
+  id: string;
+  showroomId: string;
+  userId: string;
+  userName: string;
+  userAvatar?: string;
+  rating: number; // 1 to 5
+  comment: string;
+  createdAt: string;
+}
+
 export interface Showroom {
   id: string;
   name: string;
@@ -26,6 +37,9 @@ export interface Showroom {
   phone?: string;
   userId?: string;
   cars: Car[];
+  ratings?: ShowroomRating[];
+  averageRating?: number;
+  ratingsCount?: number;
 }
 
 export interface Message {

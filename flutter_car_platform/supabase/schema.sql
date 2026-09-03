@@ -499,3 +499,76 @@ CREATE TRIGGER trigger_notify_on_new_car
     AFTER INSERT OR UPDATE OF status ON public.cars
     FOR EACH ROW EXECUTE FUNCTION public.notify_matching_users_on_new_car();
 
+-- ==============================================================================
+-- 10. جدول تقييمات المعارض (Showroom Ratings & Reviews)
+-- ==============================================================================
+ALTER TABLE public.showrooms 
+ADD COLUMN IF NOT EXISTS average_rating NUMERIC(3, 2) DEFAULT 5.00,
+ADD COLUMN IF NOT EXISTS ratings_count INTEGER DEFAULT 0;
+
+CREATE TABLE IF NOT EXISTS public.showroom_ratings (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    showroom_id UUID NOT NULL REFERENCES public.showrooms(id) ON DELETE CASCADE,
+    user_id UUID NOT NULL REFERENCES public.users(id) ON DELETE CASCADE,
+    rating INTEGER NOT NULL CHECK (rating >= 1 AND rating <= 5),
+    comment TEXT NOT NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_showroom_ratings_showroom ON public.showroom_ratings(showroom_id);
+CREATE INDEX IF NOT EXISTS idx_showroom_ratings_user ON public.showroom_ratings(user_id);
+
+-- تمكين RLS لجدول التقييمات
+ALTER TABLE public.showroom_ratings ENABLE ROW LEVEL SECURITY;
+
+-- سياسات الوصول (RLS Policies)
+CREATE POLICY "ratings_select_all" ON public.showroom_ratings
+    FOR SELECT USING (true);
+
+CREATE POLICY "ratings_insert_auth" ON public.showroom_ratings
+    FOR INSERT TO authenticated
+    WITH CHECK (auth.uid() = user_id);
+
+CREATE POLICY "ratings_update_owner" ON public.showroom_ratings
+    FOR UPDATE TO authenticated
+    USING (auth.uid() = user_id)
+    WITH CHECK (auth.uid() = user_id);
+
+CREATE POLICY "ratings_delete_owner" ON public.showroom_ratings
+    FOR DELETE TO authenticated
+    USING (auth.uid() = user_id);
+
+-- دالة إعادة حساب متوسط تقييم المعرض تلقائياً
+CREATE OR REPLACE FUNCTION public.update_showroom_rating_stats()
+RETURNS TRIGGER AS $$
+DECLARE
+    target_showroom_id UUID;
+    new_avg NUMERIC(3, 2);
+    new_count INTEGER;
+BEGIN
+    IF TG_OP = 'DELETE' THEN
+        target_showroom_id := OLD.showroom_id;
+    ELSE
+        target_showroom_id := NEW.showroom_id;
+    END IF;
+
+    SELECT COALESCE(ROUND(AVG(rating)::numeric, 2), 5.00), COUNT(*)
+    INTO new_avg, new_count
+    FROM public.showroom_ratings
+    WHERE showroom_id = target_showroom_id;
+
+    UPDATE public.showrooms
+    SET average_rating = new_avg,
+        ratings_count = new_count
+    WHERE id = target_showroom_id;
+
+    RETURN NULL;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+DROP TRIGGER IF EXISTS trigger_update_showroom_rating_stats ON public.showroom_ratings;
+CREATE TRIGGER trigger_update_showroom_rating_stats
+    AFTER INSERT OR UPDATE OR DELETE ON public.showroom_ratings
+    FOR EACH ROW EXECUTE FUNCTION public.update_showroom_rating_stats();
+
+
