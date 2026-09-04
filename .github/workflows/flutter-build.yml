@@ -1,0 +1,44 @@
+name: Flutter APK Build
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.MY_PAT }}
+
+    - name: Set up Java
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+
+    - name: Set up Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.22.0'
+        channel: 'stable'
+
+    - name: Enable Flutter Linux Desktop
+      run: flutter config --enable-linux-desktop
+
+    - name: Navigate to Flutter project and build
+      run: |
+        cd flutter_car_platform
+        flutter clean
+        flutter pub get
+        flutter build apk --release --split-per-abi
+
+    - name: Upload APKs
+      uses: actions/upload-artifact@v4
+      with:
+        name: flutter-apks
+        path: flutter_car_platform/build/app/outputs/flutter-apk/*.apk
