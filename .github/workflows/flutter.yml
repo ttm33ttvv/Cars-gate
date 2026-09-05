@@ -1,0 +1,21 @@
+name: Flutter CI
+
+on:
+  pull_request:
+  push:
+    branches: [ main, feature/flutter-scaffold ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 'stable'
+      - name: Upgrade packages (major)
+        run: flutter pub upgrade --major-versions
+      - name: Install dependencies
+        run: flutter pub get
+      - name: Run tests
+        run: flutter test --no-retry
