@@ -1,46 +1,50 @@
-name: flutter_car_platform
-description: "منصة معارض السيارات - تطبيق متكامل لإدارة وشراء وبيع السيارات والمحادثة الفورية عبر Supabase"
-publish_to: "none"
+name: cars_gate
+description: A Flutter app for Cars-gate (Scaffold)
+publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-  sdk: ">=3.0.0 <4.0.0"
+  sdk: '>=3.0.0 <4.0.0'
 
 dependencies:
   flutter:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-
-  # State Management & Routing
-  get: ^4.6.6
-
-  # Backend & Database (Supabase)
-  supabase_flutter: ^2.17.2
-
-  # Image Picker & Compression
-  image_picker: ^0.8.13+22
-  flutter_image_compress: ^2.3.0
-
-  # Push Notifications & Secure Storage
-  flutter_local_notifications: ^22.3.0
-  flutter_secure_storage: ^11.0.0
-
-  # UI Enhancements & Network Images
-  cached_network_image: ^4.0.0
-  shimmer: ^3.0.0
+  
+  # UI and utilities
+  cupertino_icons: ^1.0.8
   intl: ^0.19.0
-  url_launcher: ^6.4.3
-  flutter_dotenv: ^6.0.1
+  cached_network_image: ^3.4.1
+  image_picker: ^1.1.2
+  shimmer: ^3.0.0
+  
+  # State management and networking
+  flutter_riverpod: ^2.6.1
+  supabase_flutter: ^2.8.4
+  http: ^1.3.0
+  
+  # Storage and permissions
+  shared_preferences: ^2.5.3
+  flutter_secure_storage: ^9.2.4
+  permission_handler: ^11.3.1
+  
+  # Notifications and local storage
+  flutter_local_notifications: ^18.0.1
+  sqflite: ^2.4.2
+  path_provider: ^2.1.5
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^6.0.0
+  mocktail: ^1.0.4
+  lints: ^5.1.1
+  flutter_launcher_icons: ^0.14.3
 
 flutter:
   uses-material-design: true
-  assets:
-    - .env
-    - assets/images/
-    - assets/icons/
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/icon/icon.png"
